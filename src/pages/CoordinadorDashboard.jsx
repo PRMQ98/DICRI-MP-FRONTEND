@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
+/**
+ * Panel del coordinador:
+ * - Lista expedientes filtrados por estado.
+ * - Permite aprobar o rechazar expedientes.
+ * - Gestiona la justificación para rechazos.
+ */
 const CoordinadorDashboard = () => {
   const [expedientes, setExpedientes] = useState([]);
   const [estadoFiltro, setEstadoFiltro] = useState("registrado");
@@ -8,6 +14,10 @@ const CoordinadorDashboard = () => {
   const [mensaje, setMensaje] = useState("");
   const [error, setError] = useState("");
 
+  /**
+   * Carga expedientes desde el backend.
+   * Aplica filtro opcional por estado (registrado, aprobado, rechazado).
+   */
   const cargarExpedientes = async () => {
     try {
       setError("");
@@ -16,15 +26,21 @@ const CoordinadorDashboard = () => {
       });
       setExpedientes(res.data);
     } catch (err) {
+      console.error("Error al cargar expedientes (coordinador):", err);
       setError("Error al cargar expedientes");
     }
   };
 
+  // Recarga expedientes cada vez que cambia el filtro de estado
   useEffect(() => {
     cargarExpedientes();
+    // estadoFiltro es la única dependencia necesaria para este efecto
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [estadoFiltro]);
 
+  /**
+   * Marca un expediente como aprobado en el backend.
+   */
   const aprobar = async (id) => {
     try {
       setMensaje("");
@@ -33,15 +49,20 @@ const CoordinadorDashboard = () => {
       setMensaje("Expediente aprobado");
       cargarExpedientes();
     } catch (err) {
+      console.error("Error al aprobar expediente:", err);
       setError("Error al aprobar expediente");
     }
   };
 
+  /**
+   * Marca un expediente como rechazado, enviando una justificación obligatoria.
+   */
   const rechazar = async (id) => {
     if (!justificacion.trim()) {
       setError("Debe ingresar una justificación para el rechazo");
       return;
     }
+
     try {
       setMensaje("");
       setError("");
@@ -52,14 +73,16 @@ const CoordinadorDashboard = () => {
       setMensaje("Expediente rechazado");
       cargarExpedientes();
     } catch (err) {
+      console.error("Error al rechazar expediente:", err);
       setError("Error al rechazar expediente");
     }
   };
 
+  /**
+   * Renderiza la "píldora" de estado reutilizable con clases CSS dinámicas.
+   */
   const renderEstadoPill = (estado) => (
-    <span className={`status-pill status-${estado}`}>
-      {estado}
-    </span>
+    <span className={`status-pill status-${estado}`}>{estado}</span>
   );
 
   return (

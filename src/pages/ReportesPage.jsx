@@ -2,26 +2,49 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
+/**
+ * Vista de reportes:
+ * - Consulta resumen de expedientes en el backend.
+ * - Muestra tarjetas de totales (registrados, aprobados, rechazados).
+ */
 const ReportesPage = () => {
   const [reporte, setReporte] = useState(null);
   const [error, setError] = useState("");
 
+  /**
+   * Llama al endpoint de reportes y guarda el resultado.
+   */
   const cargarReporte = async () => {
     try {
       setError("");
       const res = await api.get("/reportes");
       setReporte(res.data);
     } catch (err) {
+      console.error("Error al obtener reporte:", err);
       setError("Error al obtener reporte");
     }
   };
 
+  // Carga inicial del resumen de estadísticas
   useEffect(() => {
     cargarReporte();
   }, []);
 
-  if (error) return <div className="page"><div className="alert alert-danger mt-3">{error}</div></div>;
-  if (!reporte) return <div className="page"><p>Cargando reporte...</p></div>;
+  if (error) {
+    return (
+      <div className="page">
+        <div className="alert alert-danger mt-3">{error}</div>
+      </div>
+    );
+  }
+
+  if (!reporte) {
+    return (
+      <div className="page">
+        <p>Cargando reporte...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="page page-reportes">

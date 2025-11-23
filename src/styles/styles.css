@@ -1,4 +1,6 @@
-/* ========= BASE ========= */
+/* =========================================================
+   VARIABLES Y CONFIGURACIÓN GLOBAL
+   ========================================================= */
 
 :root {
   --dicri-bg: #f3f5fb;
@@ -36,7 +38,9 @@ body {
   background: radial-gradient(circle at top left, #e1ebff, #f5f7fb 45%, #f3f5fb);
 }
 
-/* ========= LAYOUT ========= */
+/* =========================================================
+   LAYOUT GENERAL
+   ========================================================= */
 
 .container {
   max-width: 1200px;
@@ -54,7 +58,9 @@ body {
   margin-bottom: 1.5rem;
 }
 
-/* ========= NAVBAR ========= */
+/* =========================================================
+   NAVBAR
+   ========================================================= */
 
 .navbar {
   background-color: var(--dicri-navbar) !important;
@@ -71,51 +77,41 @@ body {
   padding-inline: 0.9rem;
 }
 
-.navbar-nav .nav-link.active,
+.navbar-nav .nav-link:hover,
 .navbar-nav .nav-link:focus,
-.navbar-nav .nav-link:hover {
+.navbar-nav .nav-link.active {
   color: #f9fafb !important;
 }
 
-.navbar-text {
-  font-size: 0.9rem;
-}
-
-/* Botón cerrar sesión */
 .navbar .btn-outline-light {
   border-radius: var(--dicri-radius-pill);
   padding: 0.25rem 1rem;
-  border-width: 1px;
 }
 
-/* Hamburguesa */
 .navbar-toggler {
-  border-radius: 10px;
-  border-width: 0;
+  border: 0;
   padding: 0.3rem 0.5rem;
+  border-radius: 10px;
 }
 
 .navbar-toggler-icon {
   background-image: none;
   width: 22px;
   height: 2px;
-  position: relative;
   background-color: transparent;
-  box-shadow: 0 7px 0 0 #f9fafb, 0 -7px 0 0 #f9fafb;
+  box-shadow: 0 7px 0 #f9fafb, 0 -7px 0 #f9fafb;
 }
 
-/* ========= CARDS ========= */
+/* =========================================================
+   CARDS (Tarjetas principales del sistema)
+   ========================================================= */
 
-.dicri-card,
-.card {
+.card,
+.dicri-card {
   border-radius: var(--dicri-radius-lg);
   border: 1px solid rgba(209, 213, 219, 0.6);
   background: var(--dicri-card-bg);
-  box-shadow: 0 22px 45px rgba(15, 23, 42, 0.06);
-}
-
-.card.shadow-sm {
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  box-shadow: var(--dicri-shadow-soft);
 }
 
 .dicri-card {
@@ -131,16 +127,15 @@ body {
   color: var(--dicri-text-muted);
 }
 
-.dicri-card-body {
-  padding-top: 0;
-}
-
+/* Card tipo tabla */
 .dicri-card-table {
   padding: 0;
   overflow: hidden;
 }
 
-/* ========= BOTONES ========= */
+/* =========================================================
+   BOTONES
+   ========================================================= */
 
 .btn {
   font-weight: 500;
@@ -154,10 +149,8 @@ body {
   box-shadow: 0 12px 28px rgba(37, 99, 235, 0.35);
 }
 
-.btn-primary:hover,
-.btn-primary:focus {
+.btn-primary:hover {
   background: linear-gradient(135deg, var(--dicri-primary-focus), var(--dicri-primary));
-  border-color: transparent;
 }
 
 .btn-secondary {
@@ -165,13 +158,20 @@ body {
   border-color: #4b5563;
 }
 
-.btn-secondary:hover,
-.btn-secondary:focus {
+.btn-secondary:hover {
   background-color: #374151;
-  border-color: #374151;
 }
 
-/* ========= FORMULARIOS ========= */
+/* Botones “chip” pequeños (Usuarios) */
+.btn-chip {
+  font-size: 0.78rem;
+  padding: 0.18rem 0.85rem;
+  border-radius: var(--dicri-radius-pill);
+}
+
+/* =========================================================
+   FORMULARIOS
+   ========================================================= */
 
 .form-label {
   font-size: 0.88rem;
@@ -182,22 +182,14 @@ body {
 .form-control,
 .form-select {
   border-radius: var(--dicri-radius-pill);
-  border: 1px solid #d1d5db;
   padding: 0.55rem 1.1rem;
-  font-size: 0.95rem;
-  box-shadow: none !important;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease,
-    background-color 0.15s ease;
+  border: 1px solid #d1d5db;
+  transition: 0.15s;
 }
-
 
 textarea.form-control {
   border-radius: var(--dicri-radius-lg);
   min-height: 120px;
-}
-
-.filter-select {
-  min-width: 180px;
 }
 
 .form-control:focus,
@@ -206,13 +198,9 @@ textarea.form-control {
   box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.35);
 }
 
-/* ========= TABLAS ========= */
-
-.table {
-  margin-bottom: 0;
-  font-size: 0.9rem;
-  color: var(--dicri-text-main);
-}
+/* =========================================================
+   TABLAS
+   ========================================================= */
 
 .dicri-table thead {
   background: linear-gradient(
@@ -222,14 +210,11 @@ textarea.form-control {
   );
 }
 
-.dicri-table thead th {
-  border-bottom-width: 1px;
-  border-color: rgba(209, 213, 219, 0.9);
+.dicri-table th {
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #6b7280;
+  letter-spacing: 0.04em;
 }
 
 .dicri-table tbody tr:nth-child(even) {
@@ -240,29 +225,22 @@ textarea.form-control {
   background-color: #eef2ff;
 }
 
-.dicri-table td,
-.dicri-table th {
-  padding: 0.7rem 1.1rem;
-  vertical-align: middle;
-}
-
+/* Códigos monospace */
 .table-code {
   font-feature-settings: "tnum" 1, "lnum" 1;
-  font-variant-numeric: tabular-nums;
 }
 
-/* ========= ESTADOS (PÍLDORAS) ========= */
+/* =========================================================
+   ESTADOS (Píldoras visuales)
+   ========================================================= */
 
 .status-pill {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   padding: 0.25rem 0.85rem;
   font-size: 0.78rem;
-  border-radius: var(--dicri-radius-pill);
   font-weight: 600;
-  text-transform: capitalize;
-  letter-spacing: 0.02em;
+  border-radius: var(--dicri-radius-pill);
 }
 
 .status-registrado {
@@ -283,102 +261,9 @@ textarea.form-control {
   border: 1px solid rgba(239, 68, 68, 0.25);
 }
 
-/* ========= LOGIN (VERSIÓN ANTERIOR BASADA EN .row)
-   (se mantiene por compatibilidad, pero el login nuevo usa .login-page)
-   ========= */
-
-body .row.justify-content-center {
-  min-height: calc(100vh - 72px);
-  align-items: center;
-}
-
-body .row.justify-content-center .card {
-  border-radius: 24px;
-  box-shadow: var(--dicri-shadow-soft);
-  border: 1px solid rgba(209, 213, 219, 0.7);
-}
-
-body .row.justify-content-center h2 {
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
-body .row.justify-content-center .card-body {
-  padding: 1.75rem 1.9rem 1.9rem;
-}
-
-body .row.justify-content-center .btn-primary {
-  width: 100%;
-}
-
-/* ========= USUARIOS (GENÉRICO) ========= */
-
-h2 + p.text-muted {
-  max-width: 960px;
-}
-
-.section-divider {
-  margin: 2rem 0 1.5rem;
-  border-color: rgba(209, 213, 219, 0.8);
-}
-
-.section-title {
-  font-size: 1.15rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-}
-
-/* ========= RESPONSIVE GLOBAL ========= */
-
-@media (max-width: 992px) {
-  .container {
-    padding-inline: 16px;
-  }
-
-  .page-title {
-    font-size: 1.6rem;
-  }
-
-  .dicri-card,
-  .card {
-    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
-  }
-}
-
-@media (max-width: 768px) {
-  body .row.justify-content-center {
-    min-height: calc(100vh - 64px);
-  }
-
-  .dicri-card {
-    padding: 14px;
-  }
-
-  .dicri-table td,
-  .dicri-table th {
-    padding-inline: 0.7rem;
-  }
-
-  .status-pill {
-    padding-inline: 0.7rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .page-title {
-    font-size: 1.4rem;
-  }
-
-  .navbar-text {
-    font-size: 0.8rem;
-  }
-}
-
 /* =========================================================
-   MEJORAS ESPECÍFICAS (LOGIN NUEVO, REPORTES, USUARIOS)
+   LOGIN PAGE
    ========================================================= */
-
-/* ===== LOGIN PAGE (LoginPage.jsx) ===== */
 
 .login-page {
   min-height: calc(100vh - 64px);
@@ -389,20 +274,17 @@ h2 + p.text-muted {
 }
 
 .login-card {
-  width: 100%;
   max-width: 520px;
+  padding: 24px 26px;
   border-radius: 24px;
   background: var(--dicri-card-bg);
   box-shadow: var(--dicri-shadow-soft);
-  padding: 24px 26px 26px;
   border: 1px solid rgba(209, 213, 219, 0.7);
 }
 
 .login-title {
   font-size: 1.9rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
-  margin-bottom: 0.35rem;
 }
 
 .login-subtitle {
@@ -410,131 +292,70 @@ h2 + p.text-muted {
   margin-bottom: 1.5rem;
 }
 
-.login-form .form-control {
-  border-radius: var(--dicri-radius-pill);
-}
+/* =========================================================
+   REPORTES
+   ========================================================= */
 
-.login-button {
-  margin-top: 0.5rem;
-}
-
-.login-footer {
-  font-size: 0.85rem;
-  color: var(--dicri-text-muted);
-  margin-top: 0.9rem;
-  text-align: center;
-}
-
-/* En pantallas pequeñas que la tarjeta tenga un poco menos de padding */
-@media (max-width: 576px) {
-  .login-card {
-    padding: 20px 18px 22px;
-  }
-
-  .login-title {
-    font-size: 1.6rem;
-  }
-}
-
-/* ===== REPORTES (ReportesPage.jsx) ===== */
-
-.page-reportes {
-  padding: 24px 20px 40px;
-}
-
-.reportes-row {
-  margin-top: 0.75rem;
-}
-
-/* tarjeta base de estadísticas */
 .stat-card {
   border-radius: var(--dicri-radius-lg);
   box-shadow: var(--dicri-shadow-soft);
-  border: none;
-  color: #fff;
+  color: white;
 }
 
-.stat-card .card-body {
-  padding: 18px 20px;
-}
-
-.stat-card .card-title {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-}
+.stat-primary { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+.stat-success { background: linear-gradient(135deg, #059669, #16a34a); }
+.stat-danger  { background: linear-gradient(135deg, #dc2626, #b91c1c); }
 
 .stat-number {
   font-size: 2.3rem;
   font-weight: 700;
-  margin: 0;
 }
 
-/* Colores por tipo */
-.stat-primary {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-}
+/* =========================================================
+   USUARIOS (Página de gestión)
+   ========================================================= */
 
-.stat-success {
-  background: linear-gradient(135deg, #059669, #16a34a);
-}
-
-.stat-danger {
-  background: linear-gradient(135deg, #dc2626, #b91c1c);
-}
-
-/* ========= USUARIOS (AJUSTES ESTÉTICOS) ========= */
-
+/* Layout general */
 .page-usuarios .usuarios-layout {
   align-items: flex-start;
 }
 
-.page-usuarios .usuarios-form-card,
-.page-usuarios .usuarios-table-card {
+/* Form y tabla */
+.usuarios-form-card,
+.usuarios-table-card {
   border-radius: 22px;
-  border-color: rgba(209, 213, 219, 0.7);
   box-shadow: var(--dicri-shadow-soft);
+  border-color: rgba(209, 213, 219, 0.7);
 }
 
-.page-usuarios .usuarios-form-header {
+.usuarios-form-header {
   font-weight: 600;
-  font-size: 0.95rem;
   background: #f9fafb;
   border-bottom: 1px solid var(--dicri-border);
 }
 
-/* Columna de acciones: que no fuerce ancho extra */
-.acciones-header,
-.acciones-cell {
-  width: 1%;
-  white-space: normal;
-}
-
-/* Contenedor de botones: se acomodan y no generan overflow */
+/* Acciones */
 .acciones-wrapper {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
   gap: 0.35rem;
+  justify-content: flex-end;
 }
 
-.btn-chip {
-  font-size: 0.78rem;
-  padding: 0.18rem 0.85rem;
-  border-radius: var(--dicri-radius-pill);
-  flex: 0 0 auto;
-}
-
-/* En pantallas pequeñas, los botones se alinean a la izquierda y pueden ocupar varias filas */
 @media (max-width: 992px) {
-  .acciones-header,
-  .acciones-cell {
-    width: auto;
-  }
-
   .acciones-wrapper {
     justify-content: flex-start !important;
   }
 }
 
+/* =========================================================
+   RESPONSIVE GLOBAL
+   ========================================================= */
 
+@media (max-width: 992px) {
+  .page-title { font-size: 1.6rem; }
+}
+
+@media (max-width: 576px) {
+  .page-title { font-size: 1.4rem; }
+}

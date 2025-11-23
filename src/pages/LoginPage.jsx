@@ -2,21 +2,33 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
+/**
+ * Pantalla de login:
+ * - Envía credenciales al backend.
+ * - Guarda token y datos básicos del usuario en localStorage.
+ * - Redirige según el rol.
+ */
 const LoginPage = () => {
   const [usuario, setUsuario] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  /**
+   * Maneja el envío del formulario de login.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
       const res = await api.post("/auth/login", { usuario, password });
+
+      // Persistencia de sesión mínima: token + usuario
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.usuario));
 
+      // Navegación basada en rol para separar flujos
       if (res.data.usuario.rol === "tecnico") {
         navigate("/tecnico");
       } else if (res.data.usuario.rol === "coordinador") {
@@ -25,6 +37,7 @@ const LoginPage = () => {
         navigate("/");
       }
     } catch (err) {
+      console.error("Error al iniciar sesión:", err);
       setError(err.response?.data?.message || "Error al iniciar sesión");
     }
   };

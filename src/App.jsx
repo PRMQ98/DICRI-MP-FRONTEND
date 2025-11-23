@@ -8,6 +8,10 @@ import CoordinadorDashboard from "./pages/CoordinadorDashboard.jsx";
 import ReportesPage from "./pages/ReportesPage.jsx";
 import UsuariosPage from "./pages/UsuariosPage.jsx";
 
+/**
+ * Obtiene el usuario autenticado desde localStorage.
+ * Se usa solo para decidir la redirección de la ruta raíz "/".
+ */
 const getUser = () => {
   const stored = localStorage.getItem("user");
   return stored ? JSON.parse(stored) : null;
@@ -19,10 +23,10 @@ const App = () => {
   return (
     <Layout>
       <Routes>
-        {/* LOGIN */}
+        {/* Auth */}
         <Route path="/login" element={<LoginPage />} />
 
-        {/* TÉCNICO */}
+        {/* Dashboard técnico */}
         <Route
           path="/tecnico"
           element={
@@ -32,7 +36,7 @@ const App = () => {
           }
         />
 
-        {/* COORDINADOR */}
+        {/* Dashboard coordinador */}
         <Route
           path="/coordinador"
           element={
@@ -42,7 +46,7 @@ const App = () => {
           }
         />
 
-        {/* REPORTES */}
+        {/* Reportes (solo coordinador) */}
         <Route
           path="/reportes"
           element={
@@ -52,7 +56,7 @@ const App = () => {
           }
         />
 
-        {/* USUARIOS – SOLO COORDINADOR */}
+        {/* Gestión de usuarios (solo coordinador) */}
         <Route
           path="/usuarios"
           element={
@@ -62,7 +66,7 @@ const App = () => {
           }
         />
 
-        {/* RUTA BASE */}
+        {/* Ruta base: redirige según rol o a login */}
         <Route
           path="/"
           element={
@@ -78,7 +82,7 @@ const App = () => {
           }
         />
 
-        {/* 404 */}
+        {/* Fallback 404 → redirige a raíz */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>

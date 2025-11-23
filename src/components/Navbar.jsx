@@ -1,10 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
 
+/**
+ * Barra de navegación superior.
+ * - Muestra opciones dinámicas según el rol del usuario (técnico / coordinador).
+ * - Permite cerrar sesión limpiando el estado en localStorage.
+ */
 const Navbar = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user") || "null");
 
   const handleLogout = () => {
+    // Limpia credenciales persistidas y redirige al login
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/login");
@@ -17,6 +23,7 @@ const Navbar = () => {
           DICRI Evidencias
         </Link>
 
+        {/* Botón hamburguesa para colapsar menú en pantallas pequeñas */}
         <button
           className="navbar-toggler"
           type="button"
@@ -29,7 +36,7 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           {user && (
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              {/* TÉCNICO */}
+              {/* Opciones visibles para rol TÉCNICO */}
               {user.rol === "tecnico" && (
                 <li className="nav-item">
                   <Link className="nav-link" to="/tecnico">
@@ -38,7 +45,7 @@ const Navbar = () => {
                 </li>
               )}
 
-              {/* COORDINADOR */}
+              {/* Opciones visibles para rol COORDINADOR */}
               {user.rol === "coordinador" && (
                 <>
                   <li className="nav-item">
@@ -63,7 +70,7 @@ const Navbar = () => {
             </ul>
           )}
 
-          {/* SECCIÓN DERECHA */}
+          {/* Zona derecha: información del usuario + acción de login/logout */}
           <span className="navbar-text ms-auto">
             {user ? (
               <>

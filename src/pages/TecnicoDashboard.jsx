@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
+/**
+ * Panel del técnico:
+ * - Crea expedientes nuevos.
+ * - Registra indicios asociados a un expediente existente.
+ * - Muestra listado de expedientes propios con su estado.
+ */
 const TecnicoDashboard = () => {
   const [codigo, setCodigo] = useState("");
   const [expedientes, setExpedientes] = useState([]);
@@ -17,22 +23,31 @@ const TecnicoDashboard = () => {
     ubicacion: ""
   });
 
+  /**
+   * Recupera expedientes desde el backend.
+   * El técnico ve su listado para seleccionar en el formulario de indicios.
+   */
   const cargarExpedientes = async () => {
     try {
       setCargando(true);
       const res = await api.get("/expedientes");
       setExpedientes(res.data);
     } catch (err) {
+      console.error("Error al cargar expedientes (técnico):", err);
       setError("Error al cargar expedientes");
     } finally {
       setCargando(false);
     }
   };
 
+  // Carga inicial de expedientes al montar el componente
   useEffect(() => {
     cargarExpedientes();
   }, []);
 
+  /**
+   * Envía el código para crear un nuevo expediente.
+   */
   const crearExpediente = async (e) => {
     e.preventDefault();
     setError("");
@@ -46,10 +61,14 @@ const TecnicoDashboard = () => {
       setCodigo("");
       cargarExpedientes();
     } catch (err) {
+      console.error("Error al crear expediente:", err);
       setError(err.response?.data?.message || "Error al crear expediente");
     }
   };
 
+  /**
+   * Crea un indicio asociado a un expediente ya existente.
+   */
   const crearIndicio = async (e) => {
     e.preventDefault();
     setError("");
@@ -72,14 +91,16 @@ const TecnicoDashboard = () => {
         ubicacion: ""
       });
     } catch (err) {
+      console.error("Error al registrar indicio:", err);
       setError(err.response?.data?.message || "Error al registrar indicio");
     }
   };
 
+  /**
+   * Componente visual reutilizable para mostrar el estado del expediente.
+   */
   const renderEstadoPill = (estado) => (
-    <span className={`status-pill status-${estado}`}>
-      {estado}
-    </span>
+    <span className={`status-pill status-${estado}`}>{estado}</span>
   );
 
   return (

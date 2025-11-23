@@ -2,6 +2,12 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
+/**
+ * Gestión de usuarios (solo coordinador):
+ * - Alta, edición y eliminación de usuarios.
+ * - Cambio de estado activo/inactivo.
+ * - Bloquea acciones peligrosas sobre el usuario logueado.
+ */
 const UsuariosPage = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [form, setForm] = useState({
@@ -9,22 +15,28 @@ const UsuariosPage = () => {
     nombre: "",
     usuario: "",
     password: "",
-    rol: "tecnico",
+    rol: "tecnico"
   });
   const [mensaje, setMensaje] = useState("");
   const [error, setError] = useState("");
 
+  // Usuario actual obtenido de localStorage
   const currentUser = JSON.parse(localStorage.getItem("user") || "null");
 
+  /**
+   * Carga todos los usuarios disponibles para el coordinador.
+   */
   const cargarUsuarios = async () => {
     try {
       const res = await api.get("/usuarios");
       setUsuarios(res.data);
     } catch (err) {
+      console.error("Error al cargar usuarios:", err);
       setError("Error al cargar usuarios");
     }
   };
 
+  // Carga inicial de usuarios
   useEffect(() => {
     cargarUsuarios();
   }, []);
@@ -35,17 +47,20 @@ const UsuariosPage = () => {
       nombre: "",
       usuario: "",
       password: "",
-      rol: "tecnico",
+      rol: "tecnico"
     });
   };
 
   const handleChange = (e) => {
     setForm({
       ...form,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
+  /**
+   * Crea o actualiza un usuario, según tenga o no id_usuario.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMensaje("");
@@ -53,14 +68,14 @@ const UsuariosPage = () => {
 
     try {
       if (form.id_usuario) {
-        // Actualizar
+        // Actualizar usuario existente
         await api.put(`/usuarios/${form.id_usuario}`, {
           nombre: form.nombre,
           usuario: form.usuario,
-          rol: form.rol,
+          rol: form.rol
         });
 
-        // Si el usuario editado es el que está logueado, actualizar localStorage
+        // Sincronizar cambios en localStorage si el usuario editado es el logueado
         if (currentUser && currentUser.id_usuario === form.id_usuario) {
           localStorage.setItem(
             "user",
@@ -68,19 +83,19 @@ const UsuariosPage = () => {
               ...currentUser,
               nombre: form.nombre,
               usuario: form.usuario,
-              rol: form.rol,
+              rol: form.rol
             })
           );
         }
 
         setMensaje("Usuario actualizado correctamente");
       } else {
-        // Crear
+        // Crear usuario nuevo
         await api.post("/usuarios", {
           nombre: form.nombre,
           usuario: form.usuario,
           password: form.password,
-          rol: form.rol,
+          rol: form.rol
         });
 
         setMensaje("Usuario creado correctamente");
@@ -89,10 +104,14 @@ const UsuariosPage = () => {
       resetForm();
       cargarUsuarios();
     } catch (err) {
+      console.error("Error al guardar el usuario:", err);
       setError(err.response?.data?.message || "Error al guardar el usuario");
     }
   };
 
+  /**
+   * Carga datos al formulario para editar un usuario concreto.
+   */
   const editarUsuario = (u) => {
     setMensaje("");
     setError("");
@@ -101,27 +120,34 @@ const UsuariosPage = () => {
       nombre: u.nombre,
       usuario: u.usuario,
       password: "",
-      rol: u.rol,
+      rol: u.rol
     });
   };
 
+  /**
+   * Alterna el estado activo/inactivo de un usuario.
+   */
   const cambiarEstado = async (u) => {
     setMensaje("");
     setError("");
 
     try {
       await api.patch(`/usuarios/${u.id_usuario}/estado`, {
-        activo: !u.activo,
+        activo: !u.activo
       });
       setMensaje("Estado actualizado");
       cargarUsuarios();
     } catch (err) {
+      console.error("Error al cambiar estado del usuario:", err);
       setError(
         err.response?.data?.message || "Error al cambiar estado del usuario"
       );
     }
   };
 
+  /**
+   * Elimina un usuario, previa confirmación.
+   */
   const eliminarUsuario = async (u) => {
     if (!window.confirm(`¿Eliminar al usuario ${u.usuario}?`)) return;
 
@@ -133,10 +159,15 @@ const UsuariosPage = () => {
       setMensaje("Usuario eliminado");
       cargarUsuarios();
     } catch (err) {
+      console.error("Error al eliminar usuario:", err);
       setError(err.response?.data?.message || "Error al eliminar usuario");
     }
   };
 
+  /**
+   * Utilidad para identificar si el registro corresponde al usuario logueado.
+   * Se usa para bloquear acciones peligrosas sobre sí mismo.
+   */
   const esMismoUsuario = (u) =>
     currentUser && currentUser.id_usuario === u.id_usuario;
 
@@ -268,7 +299,6 @@ const UsuariosPage = () => {
                           </span>
                         </td>
                         <td className="acciones-cell">
-                          {/* AQUÍ van los botones en fila, controlados por CSS */}
                           <div className="acciones-wrapper">
                             <button
                               className="btn btn-outline-primary btn-chip"
