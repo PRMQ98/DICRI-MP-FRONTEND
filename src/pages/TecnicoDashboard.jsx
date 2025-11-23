@@ -76,19 +76,25 @@ const TecnicoDashboard = () => {
     }
   };
 
+  const renderEstadoPill = (estado) => (
+    <span className={`status-pill status-${estado}`}>
+      {estado}
+    </span>
+  );
+
   return (
     <div>
-      <h2>Panel Técnico</h2>
-      <p className="text-muted">
+      <h2 className="page-title">Panel Técnico</h2>
+      <p className="page-subtitle">
         Registro de expedientes e indicios recolectados en escena.
       </p>
 
-      <div className="row">
+      <div className="row g-3 mb-4">
         {/* Crear expediente */}
-        <div className="col-md-6">
-          <div className="card mb-3 shadow-sm">
-            <div className="card-header">Nuevo expediente</div>
-            <div className="card-body">
+        <div className="col-lg-6">
+          <div className="dicri-card">
+            <div className="dicri-card-header">Nuevo expediente</div>
+            <div className="dicri-card-body">
               <form onSubmit={crearExpediente}>
                 <div className="mb-2">
                   <label className="form-label">Código de expediente</label>
@@ -109,10 +115,10 @@ const TecnicoDashboard = () => {
         </div>
 
         {/* Registrar indicio */}
-        <div className="col-md-6">
-          <div className="card mb-3 shadow-sm">
-            <div className="card-header">Registrar indicio</div>
-            <div className="card-body">
+        <div className="col-lg-6">
+          <div className="dicri-card">
+            <div className="dicri-card-header">Registrar indicio</div>
+            <div className="dicri-card-body">
               <form onSubmit={crearIndicio}>
                 <div className="mb-2">
                   <label className="form-label">Expediente</label>
@@ -206,32 +212,41 @@ const TecnicoDashboard = () => {
       {mensaje && <div className="alert alert-success">{mensaje}</div>}
       {error && <div className="alert alert-danger">{error}</div>}
 
-      <hr />
+      <hr className="section-divider" />
 
-      <h4>Expedientes registrados</h4>
+      <h4 className="section-title">Expedientes registrados</h4>
       {cargando ? (
         <p>Cargando...</p>
       ) : (
-        <table className="table table-sm table-striped">
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Fecha</th>
-              <th>Técnico</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            {expedientes.map((exp) => (
-              <tr key={exp.id_expediente}>
-                <td>{exp.codigo_expediente}</td>
-                <td>{new Date(exp.fecha_registro).toLocaleString()}</td>
-                <td>{exp.tecnico_nombre}</td>
-                <td>{exp.estado}</td>
+        <div className="dicri-card dicri-card-table">
+          <table className="table table-sm dicri-table">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Fecha</th>
+                <th>Técnico</th>
+                <th>Estado</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {expedientes.map((exp) => (
+                <tr key={exp.id_expediente}>
+                  <td className="table-code">{exp.codigo_expediente}</td>
+                  <td>{new Date(exp.fecha_registro).toLocaleString()}</td>
+                  <td>{exp.tecnico_nombre}</td>
+                  <td>{renderEstadoPill(exp.estado)}</td>
+                </tr>
+              ))}
+              {expedientes.length === 0 && (
+                <tr>
+                  <td colSpan="4" className="text-center text-muted">
+                    Aún no hay expedientes registrados.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

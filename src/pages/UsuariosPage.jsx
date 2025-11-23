@@ -1,3 +1,4 @@
+// src/pages/UsuariosPage.jsx
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
@@ -8,7 +9,7 @@ const UsuariosPage = () => {
     nombre: "",
     usuario: "",
     password: "",
-    rol: "tecnico"
+    rol: "tecnico",
   });
   const [mensaje, setMensaje] = useState("");
   const [error, setError] = useState("");
@@ -34,14 +35,14 @@ const UsuariosPage = () => {
       nombre: "",
       usuario: "",
       password: "",
-      rol: "tecnico"
+      rol: "tecnico",
     });
   };
 
   const handleChange = (e) => {
     setForm({
       ...form,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -52,14 +53,14 @@ const UsuariosPage = () => {
 
     try {
       if (form.id_usuario) {
-        // actualizar (sin password)
+        // Actualizar
         await api.put(`/usuarios/${form.id_usuario}`, {
           nombre: form.nombre,
           usuario: form.usuario,
-          rol: form.rol
+          rol: form.rol,
         });
 
-        // si el que se actualiza es el usuario logueado, actualizamos localStorage
+        // Si el usuario editado es el que está logueado, actualizar localStorage
         if (currentUser && currentUser.id_usuario === form.id_usuario) {
           localStorage.setItem(
             "user",
@@ -67,29 +68,28 @@ const UsuariosPage = () => {
               ...currentUser,
               nombre: form.nombre,
               usuario: form.usuario,
-              rol: form.rol
+              rol: form.rol,
             })
           );
         }
 
         setMensaje("Usuario actualizado correctamente");
       } else {
-        // crear
+        // Crear
         await api.post("/usuarios", {
           nombre: form.nombre,
           usuario: form.usuario,
           password: form.password,
-          rol: form.rol
+          rol: form.rol,
         });
+
         setMensaje("Usuario creado correctamente");
       }
 
       resetForm();
       cargarUsuarios();
     } catch (err) {
-      setError(
-        err.response?.data?.message || "Error al guardar el usuario"
-      );
+      setError(err.response?.data?.message || "Error al guardar el usuario");
     }
   };
 
@@ -101,7 +101,7 @@ const UsuariosPage = () => {
       nombre: u.nombre,
       usuario: u.usuario,
       password: "",
-      rol: u.rol
+      rol: u.rol,
     });
   };
 
@@ -111,7 +111,7 @@ const UsuariosPage = () => {
 
     try {
       await api.patch(`/usuarios/${u.id_usuario}/estado`, {
-        activo: !u.activo
+        activo: !u.activo,
       });
       setMensaje("Estado actualizado");
       cargarUsuarios();
@@ -133,9 +133,7 @@ const UsuariosPage = () => {
       setMensaje("Usuario eliminado");
       cargarUsuarios();
     } catch (err) {
-      setError(
-        err.response?.data?.message || "Error al eliminar usuario"
-      );
+      setError(err.response?.data?.message || "Error al eliminar usuario");
     }
   };
 
@@ -143,9 +141,9 @@ const UsuariosPage = () => {
     currentUser && currentUser.id_usuario === u.id_usuario;
 
   return (
-    <div>
-      <h2>Gestión de usuarios</h2>
-      <p className="text-muted">
+    <div className="page page-usuarios">
+      <h2 className="page-title">Gestión de usuarios</h2>
+      <p className="text-muted page-subtitle">
         Solo el coordinador puede crear, editar, activar/inactivar o eliminar
         usuarios. No es posible desactivar o eliminar al usuario coordinador que
         está actualmente logueado.
@@ -154,10 +152,11 @@ const UsuariosPage = () => {
       {mensaje && <div className="alert alert-success">{mensaje}</div>}
       {error && <div className="alert alert-danger">{error}</div>}
 
-      <div className="row">
-        <div className="col-md-4">
-          <div className="card mb-3 shadow-sm">
-            <div className="card-header">
+      <div className="row g-3 usuarios-layout">
+        {/* Formulario */}
+        <div className="col-12 col-lg-4">
+          <div className="card usuarios-form-card dicri-card">
+            <div className="card-header usuarios-form-header">
               {form.id_usuario ? "Editar usuario" : "Nuevo usuario"}
             </div>
             <div className="card-body">
@@ -200,7 +199,7 @@ const UsuariosPage = () => {
                   </div>
                 )}
 
-                <div className="mb-2">
+                <div className="mb-3">
                   <label className="form-label">Rol</label>
                   <select
                     name="rol"
@@ -214,7 +213,7 @@ const UsuariosPage = () => {
                 </div>
 
                 <button className="btn btn-primary w-100" type="submit">
-                  {form.id_usuario ? "Actualizar" : "Crear"}
+                  {form.id_usuario ? "Actualizar usuario" : "Crear usuario"}
                 </button>
 
                 {form.id_usuario && (
@@ -231,61 +230,85 @@ const UsuariosPage = () => {
           </div>
         </div>
 
-        <div className="col-md-8">
-          <h5>Usuarios registrados</h5>
-          <table className="table table-sm table-striped">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Usuario</th>
-                <th>Rol</th>
-                <th>Estado</th>
-                <th style={{ width: "220px" }}>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {usuarios.map((u) => (
-                <tr key={u.id_usuario}>
-                  <td>{u.nombre}</td>
-                  <td>{u.usuario}</td>
-                  <td>{u.rol}</td>
-                  <td>{u.activo ? "Activo" : "Inactivo"}</td>
-                  <td>
-                    <button
-                      className="btn btn-sm btn-outline-primary me-1"
-                      onClick={() => editarUsuario(u)}
-                    >
-                      Editar
-                    </button>
+        {/* Tabla */}
+        <div className="col-12 col-lg-8">
+          <div className="card usuarios-table-card dicri-card dicri-card-table">
+            <div className="card-body">
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <h5 className="section-title mb-0">Usuarios registrados</h5>
+                <span className="badge bg-light text-muted small">
+                  Total: {usuarios.length}
+                </span>
+              </div>
 
-                    <button
-                      className="btn btn-sm btn-outline-warning me-1"
-                      onClick={() => cambiarEstado(u)}
-                      disabled={esMismoUsuario(u)}
-                    >
-                      {u.activo ? "Desactivar" : "Activar"}
-                    </button>
+              <div className="table-responsive">
+                <table className="table table-sm dicri-table mb-0">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Usuario</th>
+                      <th>Rol</th>
+                      <th>Estado</th>
+                      <th className="text-end acciones-header">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {usuarios.map((u) => (
+                      <tr key={u.id_usuario}>
+                        <td>{u.nombre}</td>
+                        <td>{u.usuario}</td>
+                        <td>{u.rol}</td>
+                        <td>
+                          <span
+                            className={`status-pill ${
+                              u.activo ? "status-aprobado" : "status-rechazado"
+                            }`}
+                          >
+                            {u.activo ? "Activo" : "Inactivo"}
+                          </span>
+                        </td>
+                        <td className="acciones-cell">
+                          {/* AQUÍ van los botones en fila, controlados por CSS */}
+                          <div className="acciones-wrapper">
+                            <button
+                              className="btn btn-outline-primary btn-chip"
+                              onClick={() => editarUsuario(u)}
+                            >
+                              Editar
+                            </button>
 
-                    <button
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={() => eliminarUsuario(u)}
-                      disabled={esMismoUsuario(u)}
-                    >
-                      Eliminar
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                            <button
+                              className="btn btn-outline-warning btn-chip"
+                              onClick={() => cambiarEstado(u)}
+                              disabled={esMismoUsuario(u)}
+                            >
+                              {u.activo ? "Desactivar" : "Activar"}
+                            </button>
 
-              {usuarios.length === 0 && (
-                <tr>
-                  <td colSpan="5" className="text-center">
-                    No hay usuarios registrados.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                            <button
+                              className="btn btn-outline-danger btn-chip"
+                              onClick={() => eliminarUsuario(u)}
+                              disabled={esMismoUsuario(u)}
+                            >
+                              Eliminar
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+
+                    {usuarios.length === 0 && (
+                      <tr>
+                        <td colSpan="5" className="text-center text-muted py-4">
+                          No hay usuarios registrados.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

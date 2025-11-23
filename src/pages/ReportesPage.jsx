@@ -1,3 +1,4 @@
+// src/pages/ReportesPage.jsx
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
@@ -19,44 +20,44 @@ const ReportesPage = () => {
     cargarReporte();
   }, []);
 
-  if (error) return <div className="alert alert-danger mt-3">{error}</div>;
-  if (!reporte) return <p>Cargando reporte...</p>;
+  if (error) return <div className="page"><div className="alert alert-danger mt-3">{error}</div></div>;
+  if (!reporte) return <div className="page"><p>Cargando reporte...</p></div>;
 
   return (
-    <div>
+    <div className="page page-reportes">
       <h2>Reportes y estadísticas</h2>
       <p className="text-muted">
         Resumen general de expedientes registrados, aprobados y rechazados.
       </p>
 
-      <div className="row">
-        <div className="col-md-4">
-          <div className="card text-bg-primary mb-3">
+      <div className="row g-3 reportes-row">
+        <div className="col-12 col-md-4">
+          <div className="card stat-card stat-primary">
             <div className="card-body">
               <h5 className="card-title">Total expedientes</h5>
-              <p className="card-text display-6">
+              <p className="card-text stat-number">
                 {reporte.total_expedientes ?? 0}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="col-md-4">
-          <div className="card text-bg-success mb-3">
+        <div className="col-12 col-md-4">
+          <div className="card stat-card stat-success">
             <div className="card-body">
               <h5 className="card-title">Aprobados</h5>
-              <p className="card-text display-6">
+              <p className="card-text stat-number">
                 {reporte.total_aprobados ?? 0}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="col-md-4">
-          <div className="card text-bg-danger mb-3">
+        <div className="col-12 col-md-4">
+          <div className="card stat-card stat-danger">
             <div className="card-body">
               <h5 className="card-title">Rechazados</h5>
-              <p className="card-text display-6">
+              <p className="card-text stat-number">
                 {reporte.total_rechazados ?? 0}
               </p>
             </div>

@@ -30,44 +30,45 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="row justify-content-center">
-      <div className="col-md-4">
-        <h2 className="mt-5 mb-3 text-center">Ingreso DICRI</h2>
-        <div className="card shadow-sm">
-          <div className="card-body">
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label className="form-label">Usuario</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={usuario}
-                  onChange={(e) => setUsuario(e.target.value)}
-                  autoFocus
-                  required
-                />
-              </div>
+    <div className="login-page">
+      <div className="login-card">
+        <h1 className="login-title">Ingreso DICRI</h1>
+        <p className="login-subtitle">
+          Acceso al sistema de evidencias. Solo personal autorizado.
+        </p>
 
-              <div className="mb-3">
-                <label className="form-label">Contraseña</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-
-              {error && <div className="alert alert-danger">{error}</div>}
-
-              <button type="submit" className="btn btn-primary w-100">
-                Ingresar
-              </button>
-            </form>
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="mb-3">
+            <label className="form-label">Usuario</label>
+            <input
+              type="text"
+              className="form-control"
+              value={usuario}
+              onChange={(e) => setUsuario(e.target.value)}
+              autoFocus
+              required
+            />
           </div>
-        </div>
-        <p className="text-muted mt-3 text-center" style={{ fontSize: "0.8rem" }}>
+
+          <div className="mb-3">
+            <label className="form-label">Contraseña</label>
+            <input
+              type="password"
+              className="form-control"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          {error && <div className="alert alert-danger">{error}</div>}
+
+          <button type="submit" className="btn btn-primary w-100 login-button">
+            Ingresar
+          </button>
+        </form>
+
+        <p className="login-footer">
           Acceso restringido al personal autorizado de la DICRI.
         </p>
       </div>

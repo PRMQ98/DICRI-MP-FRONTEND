@@ -11,7 +11,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark dicri-navbar">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           DICRI Evidencias
@@ -29,7 +29,6 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           {user && (
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-
               {/* TÉCNICO */}
               {user.rol === "tecnico" && (
                 <li className="nav-item">

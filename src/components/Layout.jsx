@@ -2,9 +2,12 @@ import Navbar from "./Navbar.jsx";
 
 const Layout = ({ children }) => {
   return (
-    <div>
+    <div className="app-root">
       <Navbar />
-      <main className="container mt-4">{children}</main>
+      {/* Zona principal de la app */}
+      <main className="app-main">
+        <div className="app-content container">{children}</div>
+      </main>
     </div>
   );
 };
