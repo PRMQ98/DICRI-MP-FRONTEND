@@ -1,10 +1,12 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+
 import LoginPage from "./pages/LoginPage.jsx";
 import TecnicoDashboard from "./pages/TecnicoDashboard.jsx";
 import CoordinadorDashboard from "./pages/CoordinadorDashboard.jsx";
 import ReportesPage from "./pages/ReportesPage.jsx";
+import UsuariosPage from "./pages/UsuariosPage.jsx";
 
 const getUser = () => {
   const stored = localStorage.getItem("user");
@@ -17,8 +19,10 @@ const App = () => {
   return (
     <Layout>
       <Routes>
+        {/* LOGIN */}
         <Route path="/login" element={<LoginPage />} />
 
+        {/* TÉCNICO */}
         <Route
           path="/tecnico"
           element={
@@ -28,6 +32,7 @@ const App = () => {
           }
         />
 
+        {/* COORDINADOR */}
         <Route
           path="/coordinador"
           element={
@@ -37,6 +42,7 @@ const App = () => {
           }
         />
 
+        {/* REPORTES */}
         <Route
           path="/reportes"
           element={
@@ -46,7 +52,17 @@ const App = () => {
           }
         />
 
-        {/* Ruta raíz: redirige según rol o al login */}
+        {/* USUARIOS – SOLO COORDINADOR */}
+        <Route
+          path="/usuarios"
+          element={
+            <ProtectedRoute roles={["coordinador"]}>
+              <UsuariosPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* RUTA BASE */}
         <Route
           path="/"
           element={
@@ -62,7 +78,7 @@ const App = () => {
           }
         />
 
-        {/* Cualquier otra ruta */}
+        {/* 404 */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>

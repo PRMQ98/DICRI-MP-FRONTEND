@@ -29,6 +29,8 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           {user && (
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+
+              {/* TÉCNICO */}
               {user.rol === "tecnico" && (
                 <li className="nav-item">
                   <Link className="nav-link" to="/tecnico">
@@ -37,6 +39,7 @@ const Navbar = () => {
                 </li>
               )}
 
+              {/* COORDINADOR */}
               {user.rol === "coordinador" && (
                 <>
                   <li className="nav-item">
@@ -44,9 +47,16 @@ const Navbar = () => {
                       Revisión
                     </Link>
                   </li>
+
                   <li className="nav-item">
                     <Link className="nav-link" to="/reportes">
                       Reportes
+                    </Link>
+                  </li>
+
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/usuarios">
+                      Usuarios
                     </Link>
                   </li>
                 </>
@@ -54,10 +64,11 @@ const Navbar = () => {
             </ul>
           )}
 
+          {/* SECCIÓN DERECHA */}
           <span className="navbar-text ms-auto">
             {user ? (
               <>
-                {user.nombre} ({user.rol}){" "}
+                {user.nombre} ({user.rol})
                 <button
                   className="btn btn-sm btn-outline-light ms-2"
                   onClick={handleLogout}
